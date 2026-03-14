@@ -105,7 +105,7 @@ std::ostream &operator<<(std::ostream &os, const Tensor &tensor) {
     }
     std::string output = "[";
     if (tensor.shape().size() == 1) {
-        for (int i = 0; i < tensor.shape()[0]; i++) {
+        for (size_t i = 0; i < tensor.shape()[0]; i++) {
             output += std::to_string(tensor(i));
             if (i != tensor.shape()[0] - 1) {
                 output += ", ";
@@ -114,9 +114,9 @@ std::ostream &operator<<(std::ostream &os, const Tensor &tensor) {
         output += "]";
     }
     else if (tensor.shape().size() == 2) {
-        for (int i = 0; i < tensor.shape()[0]; i++) {
+        for (size_t i = 0; i < tensor.shape()[0]; i++) {
             output += "[";
-            for (int j = 0; j < tensor.shape()[1]; j++) {
+            for (size_t j = 0; j < tensor.shape()[1]; j++) {
                 output += std::to_string(tensor(i,j));
                 if (j != tensor.shape()[1] - 1) {
                     output += ", ";
