@@ -10,4 +10,6 @@ class Tensor {
         Tensor(float data);
         Tensor(std::vector<float> data);
         Tensor(std::vector<std::vector<float>> data);
+        const float &item() const;
+        float &item();
 };

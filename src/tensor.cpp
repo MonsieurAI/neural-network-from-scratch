@@ -23,3 +23,21 @@ Tensor::Tensor(std::vector<std::vector<float>> data)
             }
         }
     }
+
+const float &Tensor::item() const {
+    if (_shape.size() == 0) {
+        return _data[0];
+    }
+    else {
+        throw std::runtime_error("Tensor must be 0D for .item()");
+    }
+}
+
+float &Tensor::item() {
+    if (_shape.size() == 0) {
+        return _data[0];
+    }
+    else {
+        throw std::runtime_error("Tensor must be 0D for .item()");
+    }
+}
