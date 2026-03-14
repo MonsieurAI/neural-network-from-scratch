@@ -18,4 +18,5 @@ class Tensor {
         float &operator()(size_t i);
         const float &operator()(size_t i, size_t j) const;
         float &operator()(size_t i, size_t j);
+        friend std::ostream &operator<<(std::ostream &os, const Tensor &tensor);
 };

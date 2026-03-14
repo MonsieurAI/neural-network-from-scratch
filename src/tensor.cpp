@@ -97,3 +97,38 @@ float &Tensor::operator()(size_t i, size_t j) {
     }
     throw std::invalid_argument("Use 2 indeces only for 2D tensors");
 }
+
+std::ostream &operator<<(std::ostream &os, const Tensor &tensor) {
+    if (tensor.shape().size() == 0) {
+        os << tensor.item();
+        return os;
+    }
+    std::string output = "[";
+    if (tensor.shape().size() == 1) {
+        for (int i = 0; i < tensor.shape()[0]; i++) {
+            output += std::to_string(tensor(i));
+            if (i != tensor.shape()[0] - 1) {
+                output += ", ";
+            }
+        }
+        output += "]";
+    }
+    else if (tensor.shape().size() == 2) {
+        for (int i = 0; i < tensor.shape()[0]; i++) {
+            output += "[";
+            for (int j = 0; j < tensor.shape()[1]; j++) {
+                output += std::to_string(tensor(i,j));
+                if (j != tensor.shape()[1] - 1) {
+                    output += ", ";
+                }
+            }
+            output += "]";
+            if (i != tensor.shape()[0] - 1) {
+                output += ", ";
+            }
+        }
+        output += "]";
+    }
+    os << output;
+    return os;
+}
