@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <ostream>
 
 class Tensor {
     private:
@@ -12,4 +13,5 @@ class Tensor {
         Tensor(std::vector<std::vector<float>> data);
         const float &item() const;
         float &item();
+        const std::vector<size_t> &shape() const;
 };

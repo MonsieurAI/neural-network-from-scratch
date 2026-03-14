@@ -41,3 +41,7 @@ float &Tensor::item() {
         throw std::runtime_error("Tensor must be 0D for .item()");
     }
 }
+
+const std::vector<size_t> &Tensor::shape() const {
+    return _shape;
+}
