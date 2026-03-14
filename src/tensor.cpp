@@ -45,3 +45,55 @@ float &Tensor::item() {
 const std::vector<size_t> &Tensor::shape() const {
     return _shape;
 }
+
+const float &Tensor::operator()(size_t i) const {
+    if (_shape.size() == 0) {
+        throw std::invalid_argument("Cannot index into a scalar. Use .item() instead");
+    }
+    if (_shape.size() == 1) {
+        if (_shape[0] <= i) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with size " + std::to_string(_shape[0]));
+        }
+        return _data[i];
+    }
+    throw std::invalid_argument("Use two indices for 2D tensors");
+}
+
+float &Tensor::operator()(size_t i) {
+    if (_shape.size() == 0) {
+        throw std::invalid_argument("Cannot index into a scalar. Use .item() instead");
+    }
+    if (_shape.size() == 1) {
+        if (_shape[0] <= i) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with size " + std::to_string(_shape[0]));
+        }
+        return _data[i];
+    }
+    throw std::invalid_argument("Use two indices for 2D tensors");
+}
+
+const float &Tensor::operator()(size_t i, size_t j) const {
+    if (_shape.size() == 2) {
+        if (_shape[0] <= i) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with " + std::to_string(_shape[0]) + " rows");
+        }
+        if (_shape[1] <= j) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with " + std::to_string(_shape[0]) + " columns");
+        }
+        return _data[i * _stride[0] + j * _stride[1]];
+    }
+    throw std::invalid_argument("Use 2 indices for 2D tensors");
+}
+
+float &Tensor::operator()(size_t i, size_t j) {
+    if (_shape.size() == 2) {
+        if (_shape[0] <= i) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with " + std::to_string(_shape[0]) + " rows");
+        }
+        if (_shape[1] <= j) {
+            throw std::invalid_argument("Index " + std::to_string(i) + " is out of bounds for tensor with " + std::to_string(_shape[0]) + " columns");
+        }
+        return _data[i * _stride[0] + j * _stride[1]];
+    }
+    throw std::invalid_argument("Use 2 indeces only for 2D tensors");
+}

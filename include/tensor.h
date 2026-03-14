@@ -14,4 +14,8 @@ class Tensor {
         const float &item() const;
         float &item();
         const std::vector<size_t> &shape() const;
+        const float &operator()(size_t i) const;
+        float &operator()(size_t i);
+        const float &operator()(size_t i, size_t j) const;
+        float &operator()(size_t i, size_t j);
 };
