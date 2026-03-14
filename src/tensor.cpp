@@ -132,3 +132,93 @@ std::ostream &operator<<(std::ostream &os, const Tensor &tensor) {
     os << output;
     return os;
 }
+
+std::shared_ptr<Tensor> Tensor::operator+(std::shared_ptr<Tensor> other) {
+
+    // 0D + 0D
+    if (_shape.size() == 0 && other->shape().size() == 0) {
+        float output = this->item() + other->item();
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 0D + 1D
+    if (_shape.size() == 0 && other->shape().size() == 1) {
+        std::vector<float> output;
+        float num = this->item();
+        for (size_t i = 0; i < other->shape()[0]; i++) {
+            output.push_back(num + (*other)(i));
+        }
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 0D + 2D
+    if (_shape.size() == 0 && other->shape().size() == 2) {
+        std::vector<std::vector<float>> output;
+        float num = this->item();
+        for (size_t i = 0; i < other->shape()[0]; i++) {
+            std::vector<float> temp_res;
+            for (size_t j = 0; j < other->shape()[1]; j++) {
+                temp_res.push_back(num + (*other)(i,j));
+            }
+            output.push_back(temp_res);
+        }
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 1D + 0D
+    if (_shape.size() == 1 && other->shape().size() == 0) {
+        std::vector<float> output;
+        float num = other->item();
+        for (size_t i = 0; i < _shape[0]; i++) {
+            output.push_back( (*this)(i) + num);
+        }
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 2D + 0D
+    if (_shape.size() == 2 && other->shape().size() == 0) {
+        std::vector<std::vector<float>> output;
+        float num = other->item();
+        for (size_t i = 0; i < _shape[0]; i++) {
+            std::vector<float> temp_res;
+            for (size_t j = 0; j < _shape[1]; j++) {
+                temp_res.push_back( (*this)(i,j) + num);
+            }
+            output.push_back(temp_res);
+        }
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 1D + 1D
+    if (_shape.size() == 1 && other->shape().size() == 1) {
+        if (_shape[0] != other->shape()[0]) {
+            throw std::invalid_argument("For addition 1D tensors must be the same length");
+        }
+        std::vector<float> output;
+        for (size_t i = 0; i < _shape[0]; i++) {
+            output.push_back( (*this)(i) + (*other)(i));
+        }
+        return std::make_shared<Tensor>(output);
+    }
+
+    // 2D + 2D
+    if (_shape.size() == 2 && other->shape().size() == 2){
+        if (_shape[0] != other->shape()[0]) {
+            throw std::invalid_argument("First dimensions are not equal");
+        }
+        if (_shape[1] != other->shape()[1]) {
+            throw std::invalid_argument("Second dimensions are not equal");
+        }
+        std::vector<std::vector<float>> output;
+        for (size_t i = 0; i < _shape[0]; i++) {
+            std::vector<float> temp_res;
+            for (size_t j = 0; j < _shape[1]; j++) {
+                temp_res.push_back( (*this)(i,j) + (*other)(i,j) );
+            }
+            output.push_back(temp_res);
+        }
+        return std::make_shared<Tensor>(output);
+    }
+    
+    throw std::invalid_argument("Broadcasting is not allowed for these dimensions");
+}

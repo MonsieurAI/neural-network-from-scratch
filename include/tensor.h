@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <ostream>
+#include <memory>
 
 class Tensor {
     private:
@@ -19,4 +20,5 @@ class Tensor {
         const float &operator()(size_t i, size_t j) const;
         float &operator()(size_t i, size_t j);
         friend std::ostream &operator<<(std::ostream &os, const Tensor &tensor);
+        std::shared_ptr<Tensor> operator+(std::shared_ptr<Tensor> other);
 };
